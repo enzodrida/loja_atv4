@@ -5,7 +5,7 @@
 #include <errno.h>
 
 void ArquivoLista() {
-    FILE *lista = fopen("produtos.txt", "w");
+    FILE *lista = fopen("produtos.txt", "a");
 
     if (lista == NULL) {
         printf("Erro ao criar o arquivo.\n");
@@ -16,21 +16,19 @@ void ArquivoLista() {
 }
 
 void InserirProduto() {
-    // Usando vetores de caracteres para armazenar textos corretamente
     char nomeProduto[50];
     char categoriaProduto[50];
     float precoProduto;
     int quantProduto;
     char fornecedorProduto[50];
-
-    /* Abre o arquivo gerado novamente no modo "a" (adicionar)
-    para preservar os registros anteriores*/
+    /* Abre o arquivo gerado novamente*/
     FILE *lista = fopen("produtos.txt", "a");
 
     if (lista == NULL) {
         printf("Erro ao abrir o arquivo para salvar o produto.\n");
         return;
     }
+    
 
     printf("--- Cadastro de Produto ---\n");
     printf("ID gerado automaticamente!\n");
@@ -42,7 +40,7 @@ void InserirProduto() {
     scanf("%s", categoriaProduto);
 
     printf("Preço R$: ");
-    scanf("%.2f", &precoProduto);
+    scanf("%f", &precoProduto);
 
     printf("Quantidade: ");
     scanf("%d", &quantProduto);
@@ -58,15 +56,21 @@ void InserirProduto() {
     }
 
     int main (){
+        
     
     int selecaoMenu;
-    int selecaoMenuChar = "%d";    
-    selecaoMenuChar = &selecaoMenu;
+    
+    ArquivoLista();
+    
+    /*abre um laço de refetição
+      para toda vez que os prints
+      do menu forem executados
+      voltar pra o menu*/
     do
     {                                   
         printf("\n--------------- MENU ----------------\n");
         printf("1 - Inserir produto\n");
-        printf("2 - Listar produtos\n");
+        printf("2 - Mostrar a Lista\n");
         printf("3 - Alterar produto\n");
         printf("4 - Excluir produto\n");
         printf("5 - Buscar por nome\n");
@@ -79,10 +83,8 @@ void InserirProduto() {
         /*obriga o usuário a esolher a primeira opção
         para que gere o arquivo*/
         if (scanf("%d", &selecaoMenu) != 1){
-            /*Limpa os caracteres inválidos do buffer
-              pois se carregasse caracteres inválidos
-              o laço ia se tornar infito até reinciar
-              o programa.*/ 
+            /*Ao receber caracteres de tipo char
+              o codigo envia a mensagem em printf.*/ 
             while (getchar() != '\n');
             printf("Entrada invalida. Tente novamente.\n");
             continue;
